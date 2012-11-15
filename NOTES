@@ -1,0 +1,18 @@
+This service monitors tweets that mention @learn. It does the following:
+
+- Listen to @learn's user stream. Among other things, this contains @learn mentions.
+  - If a tweet is not a mention, drop it.
+  - If a mention does not have any hashtags, drop it.
+  - If a mention has hashtags but none match a course name, drop it.
+  - If a mention has hashtags and there are matches for course names:
+    - POST some JSON to the /posts endpoint containing a course's course_id and
+      the tweet.
+
+Things we don't care about:
+
+- If mention has a hashtag match, we don't care whether or not the user is a 
+  Lore user.
+  - This should be handled by something, though. For example, the posts back-end
+    can validate that the Twitter user is a Lore user.
+  - Why should this be handled? Anonymous users can post things like:
+    "Professor Cain is a puddleschlump. #CS107"
