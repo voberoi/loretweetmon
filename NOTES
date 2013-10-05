@@ -1,18 +1,10 @@
-This service monitors tweets that mention @learn. It does the following:
+This service monitors hashtags in tweets that mention a user. It does the following:
 
-- Listen to @learn's user stream. Among other things, this contains @learn mentions.
+- Listen to user's user stream. Among other things, this contains the user's mentions.
   - If a tweet is not a mention, drop it.
   - If a mention does not have any hashtags, drop it.
-  - If a mention has hashtags but none match a course name, drop it.
-  - If a mention has hashtags and there are matches for course names:
-    - POST some JSON to the /posts endpoint containing a course's course_id and
-      the tweet.
+  - If a mention has hashtags, call a client handler.
 
-Things we don't care about:
-
-- If mention has a hashtag match, we don't care whether or not the user is a 
-  Lore user.
-  - This should be handled by something, though. For example, the posts back-end
-    can validate that the Twitter user is a Lore user.
-  - Why should this be handled? Anonymous users can post things like:
-    "Professor Cain is a puddleschlump. #CS107"
+The handler implemented in tweetmon.py looks for hashtags that correspond to a Lore
+course id. If there's an equivalent course id, and the user who originate the tweet
+is a Lore user, we post the tweet to the course's timeline.
